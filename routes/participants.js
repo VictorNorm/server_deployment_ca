@@ -15,7 +15,7 @@ router.post("/", async function (req, res, next) {
   if (!email || isValidEmail == false) {
     return res.jsend.fail("You must provide a valid email");
   }
-  await users.set(email, {
+  await participants.set(email, {
     firstName: firstName,
     secondName: lastName,
     dob: dob,
