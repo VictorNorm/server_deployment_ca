@@ -9,6 +9,7 @@ let participants = db.collection("participants");
 /* GET home page. */
 router.post("/", async function (req, res, next) {
   const { email, firstName, lastName, dob, active } = req.body;
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const isValidEmail = emailRegex.test(email);
 
   if (!email || isValidEmail == false) {
