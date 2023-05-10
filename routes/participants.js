@@ -6,8 +6,26 @@ const CyclicDB = require("@cyclic.sh/dynamodb");
 const db = CyclicDB(process.env.CYCLIC_DB);
 let participants = db.collection("participants");
 
-/* GET home page. */
-router.post("/", async function (req, res, next) {
+router.get("/", async function (req, res, next) {
+  let data = [];
+  let list = await participants.list();
+  for (const participant of list.results) {
+    let item = await participants.get(participant.key);
+    if (item.props.active == true) {
+      data.push(item);
+    }
+  }
+  console.log(data);
+  res.jsend.success(data);
+});
+
+router.get("/:details", async function (req, res, next) {
+  let details = await participants.list();
+  console.log(details.results);
+  res.jsend.success(details);
+});
+
+router.post("/add", async function (req, res, next) {
   const { email, firstName, lastName, dob, active } = req.body;
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const isValidEmail = emailRegex.test(email);
